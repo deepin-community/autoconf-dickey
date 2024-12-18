@@ -1,0 +1,24 @@
+Description: Omit quilt backup files in autoreconf-dickey
+ Do not process files below a .pc/ directory in autoreconf-dickey, to
+ avoid spurious errors when configure.in file is modified by a Debian
+ patch.
+Author: Sven Joachim <svenjoac@gmx.de>
+Bug-Debian: https://bugs.debian.org/1035664
+Forwarded: not-needed
+Last-Update: 2023-10-02
+
+---
+ autoreconf.in |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+--- a/autoreconf.in
++++ b/autoreconf.in
+@@ -263,7 +263,7 @@ update="@SHELL@ $tmp/update.sh"
+ 
+ # Make a list of directories to process.
+ # The xargs grep filters out Cygnus configure.in files.
+-find . '(' -name configure.ac -o -name configure.in ')' -print |
++find . '(' -name configure.ac -o -name configure.in ')' '!' -path '*/.pc/*' -print |
+ xargs grep -l AC_INIT |
+ sed 's,/configure\.ac$,,;s,/configure\.in$,,;s,^./,,' |
+ while read dir; do

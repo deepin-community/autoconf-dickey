@@ -1,3 +1,52 @@
+autoconf-dickey (2.52+20240618-1) unstable; urgency=medium
+
+  * New upstream release.
+  * Bump Standards-Version to 4.7.0, no changes needed.
+  * Update years in debian/copyright.
+
+ -- Sven Joachim <svenjoac@gmx.de>  Sat, 13 Jul 2024 18:16:49 +0200
+
+autoconf-dickey (2.52+20231210-1) unstable; urgency=medium
+
+  * New upstream release.
+
+ -- Sven Joachim <svenjoac@gmx.de>  Tue, 02 Jan 2024 17:04:14 +0100
+
+autoconf-dickey (2.52+20230903-1) unstable; urgency=medium
+
+  * New upstream release.
+    - Omit AC_PROG_FGREP from acspecific.at, to match output from
+      mktests.sh (Closes: #1043105).
+  * Remove old upstream SHA1 signing key C52048C0C0748FEE from
+    debian/upstream/signing-key.asc.
+  * New patch debian-omit-quilt-backup-files.diff: do not process quilt
+    backup files in autoreconf-dickey (Closes: #1035664).
+
+ -- Sven Joachim <svenjoac@gmx.de>  Tue, 03 Oct 2023 09:42:26 +0200
+
+autoconf-dickey (2.52+20230114-1) unstable; urgency=medium
+
+  * New upstream release.
+  * Update years in debian/copyright.
+  * Switch debian/copyright to format 1.0.
+
+ -- Sven Joachim <svenjoac@gmx.de>  Mon, 16 Jan 2023 18:23:19 +0100
+
+autoconf-dickey (2.52+20221202-1) unstable; urgency=medium
+
+  * New upstream release.
+  * Bump Standards-Version to 4.6.2, no changes needed.
+
+ -- Sven Joachim <svenjoac@gmx.de>  Mon, 09 Jan 2023 18:51:47 +0100
+
+autoconf-dickey (2.52+20221009-1) unstable; urgency=medium
+
+  * New upstream release.
+  * Update years in debian/copyright.
+  * Bump Standards-Version to 4.6.1, no changes needed.
+
+ -- Sven Joachim <svenjoac@gmx.de>  Sun, 16 Oct 2022 18:20:29 +0200
+
 autoconf-dickey (2.52+20210509-1) unstable; urgency=medium
 
   * New upstream release.

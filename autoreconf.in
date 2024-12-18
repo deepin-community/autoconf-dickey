@@ -1,6 +1,7 @@
 #! @SHELL@
 # -*- shell-script -*-
 # autoreconf - remake all Autoconf configure scripts in a directory tree
+# Copyright 2010,2023 Thomas E. Dickey
 # Copyright 1994, 1999, 2000 Free Software Foundation, Inc.
 
 # This program is free software; you can redistribute it and/or modify
@@ -23,13 +24,14 @@ me=`echo "$0" | sed -e 's,.*[\\/],,'`
 usage="\
 Usage: $0 [OPTION] ... [TEMPLATE-FILE]
 
-Run \`autoconf' (and \`autoheader', \`aclocal' and \`automake', where
-appropriate) repeatedly to remake the Autoconf \`configure' scripts
-and configuration header templates in the directory tree rooted at the
-current directory.  By default, it only remakes those files that are
-older than their predecessors.  If you install a new version of
-Autoconf, running \`autoreconf' remakes all of the files by giving it
-the \`--force' option.
+Run \`autoconf' and \`autoheader' where appropriate) repeatedly to
+remake the Autoconf \`configure' scripts and configuration header
+templates in the directory tree rooted at the current directory.
+
+By default, it only remakes those files that are older than their
+predecessors.  If you install a new version of Autoconf, running
+\`autoreconf' remakes all of the files by giving it the \`--force'
+option.
 
 Operation modes:
   -h, --help      print this help, then exit
@@ -51,15 +53,7 @@ Library directories:
 Unless specified, heuristics try to compute \`M4DIR' from the \`Makefile.am',
 or defaults to \`m4' if it exists.
 
-The following options are passed to \`automake':
-     --cygnus          assume program is part of Cygnus-style tree
-     --foreign         set strictness to foreign
-     --gnits           set strictness to gnits
-     --gnu             set strictness to gnu
-     --include-deps    include generated dependencies in Makefile.in
-
-The environment variables AUTOCONF, AUTOHEADER, AUTOMAKE, and ACLOCAL
-are honored.
+The environment variables AUTOCONF and AUTOHEADER are honored.
 
 Report bugs to <@PACKAGE_BUGREPORT@>."
 
@@ -121,10 +115,6 @@ for autoheader in "$AUTOHEADER" \
                   "@bindir@/@autoheader-name@"; do
   test -f "$autoheader" && break
 done
-# Looking for automake.
-: ${automake=${AUTOMAKE=automake}}
-# Looking for aclocal.
-: ${aclocal=${ACLOCAL=aclocal}}
 
 # Parse command line.
 while test $# -gt 0; do
@@ -187,10 +177,6 @@ while test $# -gt 0; do
      --symlink | -s )
        symlink=:; shift ;;
 
-     # Options of Automake.
-     --cygnus | --foreign | --gnits | --gnu | --include-deps | -i )
-       automake="$automake $1"; shift ;;
-
      -- )     # Stop option processing.
        shift; break ;;
      -* )
@@ -217,23 +203,15 @@ if test $verbose = echo; then
     sed "s,.*)\(.*\)$,$me: using autoconf\1: $autoconf,;1q" >&2
   $autoheader --version |
     sed "s,.*)\(.*\)$,$me: using autoheader\1: $autoheader,;1q" >&2
-  $automake --version |
-    sed "s,.*)\(.*\)$,$me: using automake\1: $automake,;1q" >&2
-  $aclocal --version |
-    sed "s,.*)\(.*\)$,$me: using aclocal\1: $aclocal,;1q" >&2
 fi
 
 # Dispatch autoreconf's option to the tools.
 # --localdir
 autoconf="$autoconf -l $localdir"
 autoheader="$autoheader -l $localdir"
-# --force
-$force || automake="$automake --no-force"
 # --verbose
 autoconf="$autoconf `$verbose --verbose`"
 autoheader="$autoheader `$verbose --verbose`"
-automake="$automake `$verbose --verbose`"
-aclocal="$aclocal `$verbose --verbose`"
 # --debug
 $debug &&
 {
@@ -242,10 +220,6 @@ $debug &&
 }
 # --macrodir
 export autoconf_dir
-# --install and --symlink
-if $install; then
-  automake="$automake --add-missing `$symlink || echo --copy`"
-fi
 
 # Trap on 0 to stop playing with `rm'.
 $debug ||
@@ -274,16 +248,6 @@ $debug ||
 TMPDIR=$tmp
 export TMPDIR
 
-# alflags.sed -- Fetch the aclocal flags.
-cat >$tmp/alflags.sed <<EOF
-#n
-/^ACLOCAL_[A-Z_]*FLAGS/{
-  s/.*=//
-  p
-  q
-}
-EOF
-
 # update.sh --
 # Exit 0 if the first argument is not the most recent of all or is missing.
 cat >$tmp/update.sh <<\EOF
@@ -305,54 +269,6 @@ sed 's,/configure\.ac$,,;s,/configure\.in$,,;s,^./,,' |
 while read dir; do
   (
   cd $dir || continue
-
-
-  # ----------------- #
-  # Running aclocal.  #
-  # ----------------- #
-
-  # uses_aclocal -- is this package using aclocal?
-  uses_aclocal=false
-  grep 'generated .* by aclocal' $localdir/aclocal.m4 >/dev/null 2>&1 &&
-     uses_aclocal=:
-  test -f "$localdir/aclocal.m4" ||
-     uses_aclocal=:
-  if $uses_aclocal &&
-     { $force ||
-       $update $localdir/aclocal.m4 $localdir/acinclude.m4; } then
-     # If there are flags for aclocal in Makefile.am, use them.
-     aclocal_flags=`sed -f $tmp/alflags.sed Makefile.am 2>/dev/null`
-
-     # If m4dir no specified and these flags do not specify the
-     # location of the local Autoconf extensions, default to `m4'.
-     case $m4dir,$aclocal_flags in
-       ,*"-I "* ) ;; # Not overriden and specified.
-       ,*) # Not specified at all.
-           test -d "m4" && aclocal_flags="$aclocal_flags -I m4";;
-       * ) # Specified by the user.
-           aclocal_flags="$aclocal_flags -I $m4dir";;
-     esac
-
-     $verbose $me: running $aclocal $aclocal_flags --output=$localdir/aclocal.m4 in $dir >&2
-     $aclocal $aclocal_flags --output=$localdir/aclocal.m4
-  fi
-
-
-  # ------------------ #
-  # Running automake.  #
-  # ------------------ #
-
-  # Assumes that there is a Makefile.am in the topmost directory.
-  uses_automake=false
-  test -f "Makefile.am" &&
-    uses_automake=:
-  # We should always run automake, and let it decide whether it shall
-  # update the file or not.  In fact, the effect of `$force' is already
-  # included in `$automake' via `--no-force'.
-  if $uses_automake; then
-    $verbose $me: running $automake in $dir >&2
-    $automake
-  fi
 
 
   # ------------------ #

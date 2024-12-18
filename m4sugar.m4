@@ -3,6 +3,7 @@ divert(-1)#                                                  -*- Autoconf -*-
 # This file is part of Autoconf.
 # Base M4 layer.
 # Requires GNU M4.
+# Copyright 2010,2023 Thomas E. Dickey
 # Copyright 1999, 2000, 2001 Free Software Foundation, Inc.
 #
 # This program is free software; you can redistribute it and/or modify
@@ -436,7 +437,7 @@ m4_define([m4_match],
 # ------------------
 # This macro invokes all its arguments (in sequence, of course).  It is
 # useful for making your macros more structured and readable by dropping
-# unecessary dnl's and have the macros indented properly.
+# unnecessary dnl's and have the macros indented properly.
 m4_define([m4_do],
 [m4_if($#, 0, [],
        $#, 1, [$1],

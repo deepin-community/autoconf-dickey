@@ -2,7 +2,7 @@
 # -*- shell-script -*-
 # autoheader -- create `config.h.in' from `configure.ac'
 #------------------------------------------------------------------------------
-# Copyright 2010-2012,2021	Thomas E. Dickey
+# Copyright 2010-2021,2022	Thomas E. Dickey
 # Copyright 1992, 1993, 1994, 1996, 1998, 1999, 2000, 2001
 # Free Software Foundation, Inc.
 
@@ -339,7 +339,7 @@ $verbose $me: checking completeness of the template >&2
 w='[ 	]'
 if test -n "$syms"; then
   for sym in $syms; do
-    if egrep "^#$w*[a-z]*$w$w*$sym($w*|$w.*)$" $tmp/config.hin >/dev/null; then
+    if @EGREP@ "^#$w*[a-z]*$w$w*$sym($w*|$w.*)$" $tmp/config.hin >/dev/null; then
       : # All is well.
     else
       echo "$me: No template for symbol \`$sym'" >&2

@@ -1,5 +1,4 @@
-# Makefile.in generated automatically by automake 1.5 from Makefile.am.
-
+# Copyright 2010-2022,2023 Thomas E. Dickey
 # Copyright 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001
 # Free Software Foundation, Inc.
 # This Makefile.in is free software; the Free Software Foundation
@@ -39,9 +38,7 @@ pkglibdir = $(libdir)/@PACKAGE@
 pkgincludedir = $(includedir)/@PACKAGE@
 top_builddir = .
 
-ACLOCAL = @ACLOCAL@
 AUTOCONF = @AUTOCONF@
-#AUTOMAKE = @AUTOMAKE@
 AUTOHEADER = @AUTOHEADER@
 
 INSTALL = @INSTALL@
@@ -67,12 +64,12 @@ PERL = @PERL@
 PERLSCRIPTS = @PERLSCRIPTS@
 VERSION = @VERSION@
 
-AUTOMAKE_OPTIONS = check-news 1.4 readme-alpha
+EGREP = @EGREP@
+FGREP = @FGREP@
 
 SUBDIRS = . config m4 man doc tests
 
 SUFFIXES = .m4 .m4f
-ACLOCAL_AMFLAGS = --version >/dev/null && touch aclocal.m4
 WGET = wget
 
 bin_SCRIPTS = autoconf autoheader autoreconf ifnames @PERLSCRIPTS@
@@ -126,6 +123,8 @@ edit_sh = sed \
 	-e 's,@autoheader-name\@,'`echo autoheader | sed '$(transform)'`',g' \
 	-e 's,@M4\@,$(M4),g' \
 	-e 's,@AWK\@,$(AWK),g' \
+	-e 's,@EGREP\@,$(EGREP),g' \
+	-e 's,@FGREP\@,$(FGREP),g' \
 	-e 's,@VERSION\@,$(VERSION),g' \
 	-e 's,@PACKAGE_NAME\@,$(PACKAGE_NAME),g' \
 	-e 's,@PACKAGE_BUGREPORT\@,$(PACKAGE_BUGREPORT),g'
@@ -139,6 +138,8 @@ edit_pl = sed \
 	-e 's,@autoheader-name\@,'`echo autoheader | sed '$(transform)'`',g' \
 	-e 's,@M4\@,$(M4),g' \
 	-e 's,@AWK\@,$(AWK),g' \
+	-e 's,@EGREP\@,$(EGREP),g' \
+	-e 's,@FGREP\@,$(FGREP),g' \
 	-e 's,@VERSION\@,$(VERSION),g' \
 	-e 's,@PACKAGE_NAME\@,$(PACKAGE_NAME),g' \
 	-e 's,@PACKAGE_BUGREPORT\@,$(PACKAGE_BUGREPORT_PL),g'
@@ -328,7 +329,7 @@ distdir = $(PACKAGE)-$(VERSION)
 GZIP_ENV = --best
 
 distdir: $(DISTFILES)
-	@if sed 15q $(srcdir)/NEWS | fgrep -e "$(VERSION)" >/dev/null; \
+	@if sed 15q $(srcdir)/NEWS | $(FGREP) -e "$(VERSION)" >/dev/null; \
 	then :; else \
 	  echo "NEWS not updated; not releasing" 1>&2; \
 	  exit 1; \
@@ -525,40 +526,40 @@ install-data-hook: INSTALL.txt
 	done
 
 autoconf: $(srcdir)/autoconf.in $(srcdir)/configure.ac
-	rm -f autoconf autoconf.tmp
-	$(edit_sh) $(srcdir)/autoconf.in >autoconf.tmp
-	chmod +x autoconf.tmp
-	mv autoconf.tmp autoconf
+	rm -f $@ $@.tmp
+	$(edit_sh) $(srcdir)/$@.in >$@.tmp
+	chmod +x $@.tmp
+	mv $@.tmp $@
 
 autoheader: $(srcdir)/autoheader.in $(srcdir)/configure.ac
-	rm -f autoheader autoheader.tmp
-	$(edit_sh) $(srcdir)/autoheader.in >autoheader.tmp
-	chmod +x autoheader.tmp
-	mv autoheader.tmp autoheader
+	rm -f $@ $@.tmp
+	$(edit_sh) $(srcdir)/$@.in >$@.tmp
+	chmod +x $@.tmp
+	mv $@.tmp $@
 
 autoreconf: $(srcdir)/autoreconf.in $(srcdir)/configure.ac
-	rm -f autoreconf autoreconf.tmp
-	$(edit_sh) $(srcdir)/autoreconf.in >autoreconf.tmp
-	chmod +x autoreconf.tmp
-	mv autoreconf.tmp autoreconf
+	rm -f $@ $@.tmp
+	$(edit_sh) $(srcdir)/$@.in >$@.tmp
+	chmod +x $@.tmp
+	mv $@.tmp $@
 
 autoupdate: $(srcdir)/autoupdate.in $(srcdir)/configure.ac
-	rm -f autoupdate autoupdate.tmp
-	$(edit_pl) $(srcdir)/autoupdate.in >autoupdate.tmp
-	chmod +x autoupdate.tmp
-	mv autoupdate.tmp autoupdate
+	rm -f $@ $@.tmp
+	$(edit_pl) $(srcdir)/$@.in >$@.tmp
+	chmod +x $@.tmp
+	mv $@.tmp $@
 
 ifnames: $(srcdir)/ifnames.in $(srcdir)/configure.ac
-	rm -f ifnames ifnames.tmp
-	$(edit_sh) $(srcdir)/ifnames.in >ifnames.tmp
-	chmod +x ifnames.tmp
-	mv ifnames.tmp ifnames
+	rm -f $@ $@.tmp
+	$(edit_sh) $(srcdir)/$@.in >$@.tmp
+	chmod +x $@.tmp
+	mv $@.tmp $@
 
 autoscan: $(srcdir)/autoscan.in $(srcdir)/configure.ac
-	rm -f autoscan autoscan.tmp
-	$(edit_pl) $(srcdir)/autoscan.in >autoscan.tmp
-	chmod +x autoscan.tmp
-	mv autoscan.tmp autoscan
+	rm -f $@ $@.tmp
+	$(edit_pl) $(srcdir)/$@.in >$@.tmp
+	chmod +x $@.tmp
+	mv $@.tmp $@
 
 # When processing the file with diversion disabled, there must be no
 # output but comments and empty lines.

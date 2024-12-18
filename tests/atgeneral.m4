@@ -1,5 +1,6 @@
 include(m4sh.m4)					    -*- Autoconf -*-
 # M4 macros used in building test suites.
+# Copyright 2022,2023 Thomas E. Dickey
 # Copyright 2000, 2001 Free Software Foundation, Inc.
 
 # This program is free software; you can redistribute it and/or modify
@@ -176,7 +177,7 @@ EOF
     at_tests_pattern=`echo "$at_tests" | sed 's/^  *//;s/  *$//;s/  */|/g'`
     at_tests_pattern=" (${at_tests_pattern}): "
   fi
-  egrep -e "$at_tests_pattern" <<EOF
+  $EGREP -e "$at_tests_pattern" <<EOF
 m4_divert([HELP])dnl Help message inserted here.
 m4_divert([SETUP])dnl
 EOF
@@ -385,7 +386,7 @@ m4_divert_push([TESTS])dnl
 # So the question is:
 #
 #       Can you write a regexp that matches those four characters,
-#       and respects the M4 quotation contraints?
+#       and respects the M4 quotation constraints?
 #
 # The answer is: (rot13) tvira va gur ertrkc orybj, lbh vqvbg!
 m4_define([AT_CLEANUP_FILE_IFELSE],
@@ -529,8 +530,8 @@ $at_verbose "$srcdir/AT_LINE: AS_ESCAPE([$1])"
 echo AT_LINE >at-check-line
 ( $at_traceon; $1 ) >at-stdout 2>at-stder1
 at_status=$?
-egrep '^ *\+' at-stder1 >&2
-egrep -v '^ *\+' at-stder1 >at-stderr
+$EGREP '^ *\+' at-stder1 >&2
+$EGREP -v '^ *\+' at-stder1 >at-stderr
 at_failed=false
 dnl Check stderr.
 m4_case([$4],

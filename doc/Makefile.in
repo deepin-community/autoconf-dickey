@@ -1,5 +1,4 @@
-# Makefile.in generated automatically by automake 1.5 from Makefile.am.
-
+# Copyright 2010-2012,2023 Thomas E. Dickey
 # Copyright 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001
 # Free Software Foundation, Inc.
 # This Makefile.in is free software; the Free Software Foundation
@@ -39,9 +38,7 @@ pkglibdir = $(libdir)/@PACKAGE@
 pkgincludedir = $(includedir)/@PACKAGE@
 top_builddir = ..
 
-ACLOCAL = @ACLOCAL@
 AUTOCONF = @AUTOCONF@
-#AUTOMAKE = @AUTOMAKE@
 AUTOHEADER = @AUTOHEADER@
 
 INSTALL_INFO = @INSTALL_INFO@

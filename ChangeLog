@@ -1,4 +1,91 @@
 -- vile:fk=utf-8
+2024-06-18  Thomas E. Dickey <dickey@invisible-island.net>
+	Version 2.52.20240618.
+
+	modify line-continuation handling in AC_SUBST to accept input which
+	has no trailing backslashes.
+
+2024-04-06  Thomas E. Dickey <dickey@invisible-island.net>
+	Version 2.52.20240406.
+
+	warn about any of the plethora of groff-specific options which are not
+	supported
+
+	initialize the dummy variable in AC_TYPE_SIGNAL (Urs Janßen).
+
+2023-12-10  Thomas E. Dickey <dickey@invisible-island.net>
+	Version 2.52.20231210.
+
+	fix warning about cast in AC_CHECK_DECL.
+
+2023-12-03  Thomas E. Dickey <dickey@invisible-island.net>
+	Version 2.52.20231203.
+
+	spelling fixes, with codespell
+
+	fix warning about nonzero pointer in AC_FUNC_FSEEKO.
+
+	fix a few unused-variable warnings in AC_C_CONST.
+
+	use void-parameter prototype in AC_C_INLINE.
+
+	use void-parameter prototype in AC_LANG_CALL(C), to reduce strict
+	compiler warnings in existence-checks, noting this will break some
+	checks, e.g., where a built-in prototype is used by a compiler.
+
+	updated config/config.{guess,sub}
+
+2023-09-03  Thomas E. Dickey <dickey@invisible-island.net>
+	Version 2.52.20230903.
+
+	trim mentions of automake and aclocal, since unused (Debian #1035621).
+
+        fix a sign-extension bug in AC_FUNC_MKTIME which caused the test to run
+        longer than necessary.
+
+	amend fixes for $EGREP and $FGREP to work with Solaris 10 /bin/sh
+
+	improve rules for generating tests and cleanup in tests/Makefile.in
+
+	omit AC_PROG_FGREP from acspecific.at, to match output from mktests.sh
+	(Debian #1043105).
+
+	updated config/config.{guess,sub}, install-sh
+
+2023-01-14  Thomas E. Dickey <dickey@invisible-island.net>
+	Version 2.52.20230114.
+
+	modify AC_CHECK_DECL, AC_PROG_CC_STDC, AC_STRUCT_TM, and
+	AC_TYPE_SIGNAL to reduce compiler warnings.
+
+2022-12-02  Thomas E. Dickey <dickey@invisible-island.net>
+	Version 2.52.20221202.
+
+	modify AC_TYPE_GETGROUPS to use AC_INCLUDES_DEFAULT
+
+	modify AC_FUNC_STRTOD to use stdlib.h, amend check to reduce compiler
+	warnings.
+
+	modify AC_FUNC_CLOSEDIR_VOID to reduce compiler warnings.
+
+2022-10-09  Thomas E. Dickey <dickey@invisible-island.net>
+	Version 2.52.20221009.
+
+	improve workaround for GNU grep 3.8 by requiring egrep/fgrep checks
+	for AC_OUTPUT.
+
+	corrected shell script for passing detected egrep/fgrep into
+	config.status
+
+2022-10-01  Thomas E. Dickey <dickey@invisible-island.net>
+	Version 2.52.20221001.
+
+	work around warning messages from GNU grep 3.8 for egrep and fgrep.
+
+	fix some shellcheck warnings in the generated config.status
+
+	updated config/config.{guess,sub}
+
 2021-05-09  Thomas E. Dickey <dickey@invisible-island.net>
 	Version 2.52.20210509.
 

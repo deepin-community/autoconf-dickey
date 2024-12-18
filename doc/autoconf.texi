@@ -55,7 +55,7 @@ This file documents the GNU Autoconf package for creating scripts to
 configure source code packages using templates and an @code{m4} macro
 package.
  
-Copyright 2003-2020,2021	Thomas E. Dickey
+Copyright 2003-2022,2023	Thomas E. Dickey@*
 Copyright 1992, 1993, 1994, 1995, 1996, 1998, 1999, 2000, 2001 Free
 Software Foundation, Inc.
 
@@ -349,7 +349,7 @@ Site Configuration
 
 * External Software::           Working with other optional software
 * Package Options::             Selecting optional features
-* Pretty Help Strings::         Formating help string
+* Pretty Help Strings::         Formatting help string
 * Site Details::                Configuring site details
 * Transforming Names::          Changing program names when installing
 * Site Defaults::               Giving @code{configure} local defaults
@@ -631,14 +631,8 @@ the GNU build tools.
 @item Web
 
 The home pages for
-@href{http://www.gnu.org/software/autoconf/,Autoconf},
-@href{http://www.gnu.org/software/automake/,Automake}, and
+@href{http://www.gnu.org/software/autoconf/,Autoconf}, and
 @href{http://www.gnu.org/software/libtool/,Libtool}.
-
-@item Automake Manual
-
-@xref{Top,,Automake,automake,GNU Automake}, for more
-information on Automake.
 
 @item Books
 
@@ -1340,9 +1334,7 @@ character is suitable as a separator)):
 @example
 @group
 $ autoconf -t 'AM_MISSING_PROG:$@{|:::::|@}*'
-ACLOCAL|:::::|aclocal|:::::|$missing_dir
 AUTOCONF|:::::|autoconf|:::::|$missing_dir
-AUTOMAKE|:::::|automake|:::::|$missing_dir
 @i{More traces deleted}
 @end group
 @end example
@@ -1413,7 +1405,7 @@ newer than their input files (@file{configure.ac} and, if present,
 @item --install
 @itemx -i
 Copy missing auxiliary files.  This option is similar to the option
-@code{--add-missing} in @code{automake}.
+@code{--add-missing} in other tools.
 
 @item --symlink
 @itemx -s
@@ -1439,26 +1431,6 @@ plays with different versions of Autoconf simultaneously.
 @item --m4dir=@var{dir}
 @itemx -M @var{dir}
 Specify location of additional macro files (@file{m4} by default).
-@end table
-
-Additionally, the following options are recognized and passed to
-@code{automake}:
-
-@table @option
-@item --cygnus
-Assume program is part of Cygnus-style tree.
-
-@item --foreign
-Set strictness to foreign.
-
-@item --gnits
-Set strictness to gnits.
-
-@item --gnu
-Set strictness to gnu.
-
-@item --include-deps
-Include generated dependencies in @file{Makefile.in}.
 @end table
 
 
@@ -7207,7 +7179,7 @@ Russ Allbery:
 @quotation
 The @sc{gnu} assumption that @command{/bin/sh} is the one and only shell
 leads to a permanent deadlock.  Vendors don't want to break user's
-existant shell scripts, and there are some corner cases in the Bourne
+existent shell scripts, and there are some corner cases in the Bourne
 shell that are not completely compatible with a @sc{posix} shell.  Thus,
 vendors who have taken this route will @emph{never} (OK@dots{}``never say
 never'') replace the Bourne shell (as @command{/bin/sh}) with a
@@ -9028,7 +9000,7 @@ options.
 @menu
 * External Software::           Working with other optional software
 * Package Options::             Selecting optional features
-* Pretty Help Strings::         Formating help string
+* Pretty Help Strings::         Formatting help string
 * Site Details::                Configuring site details
 * Transforming Names::          Changing program names when installing
 * Site Defaults::               Giving @code{configure} local defaults

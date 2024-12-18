@@ -1,17 +1,16 @@
 Summary: autoconf-252 - Generate configuration scripts
 %define AppProgram autoconf
 %define AppVersion 2.52
-%define AppRelease 20210509
+%define AppRelease 20240618
 %define AppSuffix  -252
-# $Id: ac252.spec,v 1.35 2021/05/09 17:53:30 tom Exp $
+# $Id: ac252.spec,v 1.51 2024/06/17 23:31:10 tom Exp $
 Name: ac252
 Version: %{AppVersion}
 Release: %{AppRelease}
 License: GPLv2
 Group: Applications/Development
-URL: ftp://ftp.invisible-island.net/%{AppProgram}
-Source0: %{AppProgram}-%{AppVersion}-%{AppRelease}.tgz
-Packager: Thomas E. Dickey <dickey@invisible-island.net>
+URL: http://invisible-island.net/%{AppProgram}
+Source0: http://invisible-island.net/archives/%{AppProgram}/%{AppProgram}-%{AppVersion}-%{AppRelease}.tgz
 
 BuildArch:	noarch
 #BuildRequires:	m4
@@ -37,6 +36,7 @@ INSTALL_PROGRAM='${INSTALL}' \
 		--target %{_target_platform} \
 		--prefix=%{_prefix} \
 		--bindir=%{_bindir} \
+		--libdir=%{_libdir} \
 		--mandir=%{_mandir} \
 		--datadir=%{_datadir}/%{MyName} \
 		--infodir=%{_infodir}
@@ -46,12 +46,9 @@ make
 %install
 [ "$RPM_BUILD_ROOT" != "/" ] && rm -rf $RPM_BUILD_ROOT
 
-make install                    DESTDIR=$RPM_BUILD_ROOT
+make install DESTDIR=$RPM_BUILD_ROOT
 rm -f $RPM_BUILD_ROOT%{_infodir}/dir
 rm -f $RPM_BUILD_ROOT%{_infodir}/standards*
-
-%clean
-[ "$RPM_BUILD_ROOT" != "/" ] && rm -rf $RPM_BUILD_ROOT
 
 %post
 %{find_tool}
@@ -77,6 +74,9 @@ fi
 
 %changelog
 # each patch should add its ChangeLog entries here
+
+* Sun Sep 03 2023 Thomas E. Dickey
+- update http-url, rpmlint'd
 
 * Sun Aug 19 2018 Thomas E. Dickey
 - update ftp-url
