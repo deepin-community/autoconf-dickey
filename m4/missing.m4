@@ -24,9 +24,6 @@ if test -z "$install_sh"; then
    do
      test -f "$install_sh" && break
    done
-   # FIXME: an evil hack: we remove the SHELL invocation from
-   # install_sh because automake adds it back in.  Sigh.
-   install_sh=`echo $install_sh | sed -e 's/\${SHELL}//'`
 fi
 AC_SUBST(install_sh)])
 
@@ -56,12 +53,12 @@ fi
 # from the auxiliary directory.  The problem is that $srcdir (hence
 # $ac_aux_dir) can be either an absolute path or a path relative to
 # $top_srcdir or absolute, this depends on how configure is run.  This
-# is pretty anoying since it makes $ac_aux_dir quite unusable in
+# is pretty annoying since it makes $ac_aux_dir quite unusable in
 # subdirectories: on the top source directory, any form will work
 # fine, but in subdirectories relative pat needs to be adapted.
 # - calling $top_srcidr/$ac_aux_dir/missing would success if $srcdir is
 #   relative, but fail if $srcdir is absolute
-# - conversly, calling $ax_aux_dir/missing would fail if $srcdir is
+# - conversely, calling $ax_aux_dir/missing would fail if $srcdir is
 #   absolute, and success on relative paths.
 #
 # Consequently, we define and use $am_aux_dir, the "always absolute"

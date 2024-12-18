@@ -109,9 +109,7 @@ cvs-dist: cvs-check maintainer-distcheck
 # Use this to make sure we don't run these programs when building
 # from a virgin tgz file, below.
 null_AM_MAKEFLAGS = \
-  ACLOCAL=false \
   AUTOCONF=false \
-  AUTOMAKE=false \
   AUTOHEADER=false \
   MAKEINFO=false
 

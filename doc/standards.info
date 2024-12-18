@@ -209,7 +209,7 @@ designing your program.
 
 * Menu:
 
-* Source Language::             Which languges to use.
+* Source Language::             Which languages to use.
 * Compatibility::               Compatibility with other implementations
 * Using Extensions::            Using non-standard features
 * Standard C::                  Using Standard C features
@@ -677,7 +677,7 @@ to be input files only; any output files would be specified using
 options (preferably '-o' or '--output').  Even if you allow an output
 file name as an ordinary argument for compatibility, try to provide an
 option as another way to specify it.  This will lead to more consistency
-among GNU utilities, and fewer idiosyncracies for users to remember.
+among GNU utilities, and fewer idiosyncrasies for users to remember.
 
    All programs should support two standard options: '--version' and
 '--help'.
@@ -4362,7 +4362,7 @@ Index
 * program name and its behavior:         User Interfaces.     (line   6)
 * program's canonical name:              Command-Line Interfaces.
                                                               (line  41)
-* programming languges:                  Source Language.     (line   6)
+* programming languages:                 Source Language.     (line   6)
 * proprietary programs:                  Reading Non-Free Code.
                                                               (line   6)
 * README file:                           Releases.            (line  17)

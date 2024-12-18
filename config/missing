@@ -1,5 +1,6 @@
 #! /bin/sh
 # Common stub for a few missing GNU programs while installing.
+# Copyright 2010-2017,2023 Thomas E. Dickey
 # Copyright 1996, 1997, 1999, 2000 Free Software Foundation, Inc.
 # Originally by Fran,cois Pinard <pinard@iro.umontreal.ca>, 1996.
 
@@ -67,7 +68,6 @@ Supported PROGRAM values:
   aclocal      touch file \`aclocal.m4'
   autoconf     touch file \`configure'
   autoheader   touch file \`config.h.in'
-  automake     touch all \`Makefile.in' files
   bison        create \`y.tab.[ch]', if possible, from existing .[ch]
   flex         create \`lex.yy.c', if possible, from existing .c
   help2man     touch the output file
@@ -75,10 +75,6 @@ Supported PROGRAM values:
   makeinfo     touch the output file
   tar          try tar, gnutar, gtar, then tar without non-portable flags
   yacc         create \`y.tab.[ch]', if possible, from existing .[ch]"
-    ;;
-
-  -v|--v|--ve|--ver|--vers|--versi|--versio|--version)
-    echo "missing 0.3 - GNU automake"
     ;;
 
   -*)
@@ -116,17 +112,6 @@ WARNING: \`$1' is missing on your system.  You should only need it if
       esac
     done
     touch $touch_files
-    ;;
-
-  automake)
-    echo 1>&2 "\
-WARNING: \`$1' is missing on your system.  You should only need it if
-         you modified \`Makefile.am', \`acinclude.m4' or \`${configure_ac}'.
-         You might want to install the \`Automake' and \`Perl' packages.
-         Grab them from any GNU archive site."
-    find . -type f -name Makefile.am -print |
-	   sed 's/\.am$/.in/' |
-	   while read f; do touch "$f"; done
     ;;
 
   bison|yacc)

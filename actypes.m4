@@ -1,7 +1,7 @@
 # This file is part of Autoconf.                       -*- Autoconf -*-
 # Type related macros: existence, sizeof, and structure members.
 #------------------------------------------------------------------------------
-# Copyright 2020,2021	Thomas E. Dickey
+# Copyright 2020-2023,2024	Thomas E. Dickey
 # Copyright 2000, 2001
 # Free Software Foundation, Inc.
 #
@@ -247,7 +247,7 @@ AC_DEFUN([AC_CHECK_TYPE],
 AC_DEFUN([AC_TYPE_GETGROUPS],
 [AC_REQUIRE([AC_TYPE_UID_T])dnl
 AC_CACHE_CHECK(type of array argument to getgroups, ac_cv_type_getgroups,
-[AC_RUN_IFELSE([AC_LANG_SOURCE(
+[AC_RUN_IFELSE([AC_LANG_SOURCE([AC_INCLUDES_DEFAULT]
 [[/* Thanks to Mike Rendell for this test.  */
 #include <sys/types.h>
 #define NGID 256
@@ -322,13 +322,9 @@ AC_DEFUN([AC_TYPE_SIGNAL],
 #ifdef signal
 # undef signal
 #endif
-#ifdef __cplusplus
-extern "C" void (*signal (int, void (*)(int)))(int);
-#else
-void (*signal ()) ();
-#endif
+extern void (*signal (int, void (*)(int)))(int);
 ],
-                 [int i;])],
+                 [int i = 0; (void) i])],
                    [ac_cv_type_signal=void],
                    [ac_cv_type_signal=int])])
 AC_DEFINE_UNQUOTED(RETSIGTYPE, $ac_cv_type_signal,
@@ -524,7 +520,7 @@ AC_DEFUN([AC_STRUCT_TM],
 [AC_COMPILE_IFELSE([AC_LANG_PROGRAM([#include <sys/types.h>
 #include <time.h>
 ],
-                                    [struct tm *tp; tp->tm_sec;])],
+    [static struct tm tp; long xx = tp.tm_sec; (void)xx])],
                    [ac_cv_struct_tm=time.h],
                    [ac_cv_struct_tm=sys/time.h])])
 if test $ac_cv_struct_tm = sys/time.h; then

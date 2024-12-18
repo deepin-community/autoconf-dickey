@@ -1,6 +1,7 @@
 #! @PERL@ -w
 # -*- perl -*-
 # autoscan - Create configure.scan (a preliminary configure.ac) for a package.
+# Copyright 2010,2023 Thomas E. Dickey
 # Copyright 1994, 1999, 2000, 2001 Free Software Foundation, Inc.
 
 # This program is free software; you can redistribute it and/or modify
@@ -135,9 +136,9 @@ sub parse_args ()
   my $srcdir;
   Getopt::Long::config ("bundling");
   Getopt::Long::GetOptions ("A|autoconf-dir|m|macrodir=s" => \$datadir,
-			    "h|help" => \&print_usage,
-			    "V|version" => \&print_version,
-			    "v|verbose" => \$verbose)
+                            "h|help" => \&print_usage,
+                            "V|version" => \&print_version,
+                            "v|verbose" => \$verbose)
     or exit 1;
 
   die "$me: too many arguments
@@ -161,15 +162,15 @@ sub find_autoconf
   # We test "$dir/autoconf" in case we are in the build tree, in which case
   # the names are not transformed yet.
   foreach my $file ($ENV{"AUTOCONF"} || '',
-		    "$dir/@autoconf-name@",
-		    "$dir/autoconf",
-		    "@bindir@/@autoconf-name@")
+                    "$dir/@autoconf-name@",
+                    "$dir/autoconf",
+                    "@bindir@/@autoconf-name@")
     {
       if (-x $file)
-	{
-	  $autoconf = $file;
-	  last;
-	}
+        {
+          $autoconf = $file;
+          last;
+        }
     }
 }
 
@@ -182,10 +183,10 @@ sub find_configure_ac ()
   if (-f 'configure.ac')
     {
       if (-f 'configure.in')
-	{
-	  warn "warning: `configure.ac' and `configure.in' both present.\n";
-	  warn "warning: proceeding with `configure.ac'.\n";
-	}
+        {
+          warn "warning: `configure.ac' and `configure.in' both present.\n";
+          warn "warning: proceeding with `configure.ac'.\n";
+        }
       return 'configure.ac';
     }
   elsif (-f 'configure.in')
@@ -207,8 +208,8 @@ sub init_tables ()
   # so don't ignore them.
 
   foreach (qw (int char float double struct union long short unsigned
-	       auto extern register typedef static goto return sizeof break
-	       continue if else for do while switch case default))
+               auto extern register typedef static goto return sizeof break
+               continue if else for do while switch case default))
     {
       $c_keywords{$_} = 0;
     }
@@ -222,34 +223,34 @@ sub init_tables ()
     {
       my $file = "$datadir/ac$kind";
       my $table = new IO::File $file
-	or die "$me: cannot open $file: $!\n";
+        or die "$me: cannot open $file: $!\n";
       while ($_ = $table->getline)
-	{
-	  # Ignore blank lines and comments.
-	  next
-	    if /^\s*$/ || /^\s*\#/;
-	  unless (/^(\S+)\s+(\S.*)$/ || /^(\S+)\s*$/)
-	    {
-	      die "$me: cannot parse definition in $file:\n$_\n";
-	    }
-	  my $word = $1;
-	  my $macro = $2 || $generic_macro{$kind};
-	  # The default macro must be explicitly listed for words
-	  # which have a specific macros.  This allows to enforce
-	  # consistency checks.
-	  if (!defined $2 && exists $macro{$kind}{$word})
-	    {
-	      warn ("$datadir/ac$kind:$.: "
-		    . "ignoring implicit call to the generic macro for $word\n");
-	      $tables_are_consistent = 0;
-	    }
-	  else
-	    {
-	      push @{$macro{$kind}{$word}}, $macro;
-	    }
-	}
+        {
+          # Ignore blank lines and comments.
+          next
+            if /^\s*$/ || /^\s*\#/;
+          unless (/^(\S+)\s+(\S.*)$/ || /^(\S+)\s*$/)
+            {
+              die "$me: cannot parse definition in $file:\n$_\n";
+            }
+          my $word = $1;
+          my $macro = $2 || $generic_macro{$kind};
+          # The default macro must be explicitly listed for words
+          # which have a specific macros.  This allows to enforce
+          # consistency checks.
+          if (!defined $2 && exists $macro{$kind}{$word})
+            {
+              warn ("$datadir/ac$kind:$.: "
+                    . "ignoring implicit call to the generic macro for $word\n");
+              $tables_are_consistent = 0;
+            }
+          else
+            {
+              push @{$macro{$kind}{$word}}, $macro;
+            }
+        }
       $table->close
-	or die "$me: cannot close $file: $!\n";
+        or die "$me: cannot close $file: $!\n";
     }
 
   die "$me: some tables are inconsistent\n"
@@ -282,25 +283,25 @@ sub scan_c_file ($)
       # Strip out comments, approximately.
       # Ending on this line.
       if ($in_comment && m,\*/,)
-	{
-	  s,.*\*/,,;
-	  $in_comment = 0;
-	}
+        {
+          s,.*\*/,,;
+          $in_comment = 0;
+        }
       # All on one line.
       s,/\*.*\*/,,g;
       # Starting on this line.
       if (m,/\*,)
-	{
-	  $in_comment = 1;
-	}
+        {
+          $in_comment = 1;
+        }
       # Continuing on this line.
       next if $in_comment;
 
       # Preprocessor directives.
       if (/^\s*\#\s*include\s*<([^>]*)>/)
-	{
-	  push (@{$used{'headers'}{$1}}, "$File::Find::name:$.");
-	}
+        {
+          push (@{$used{'headers'}{$1}}, "$File::Find::name:$.");
+        }
       # Ignore other preprocessor directives.
       next if /^\s*\#/;
 
@@ -311,15 +312,15 @@ sub scan_c_file ($)
       # Tokens in the code.
       # Maybe we should ignore function definitions (in column 0)?
       while (s/\b([a-zA-Z_]\w*)\s*\(/ /)
-	{
-	  push (@{$used{'functions'}{$1}}, "$File::Find::name:$.")
-	    if !defined $c_keywords{$1};
-	}
+        {
+          push (@{$used{'functions'}{$1}}, "$File::Find::name:$.")
+            if !defined $c_keywords{$1};
+        }
       while (s/\b([a-zA-Z_]\w*)\b/ /)
-	{
-	  push (@{$used{'identifiers'}{$1}}, "$File::Find::name:$.")
-	    if !defined $c_keywords{$1};
-	}
+        {
+          push (@{$used{'identifiers'}{$1}}, "$File::Find::name:$.")
+            if !defined $c_keywords{$1};
+        }
     }
 
   $file->close
@@ -342,24 +343,24 @@ sub scan_makefile ($)
       # Strip out comments and variable references.
       s/#.*//;
       s/\$\([^\)]*\)//g;
-      s/\${[^\}]*}//g;
+      s/\$\{[^\}]*\}//g;
       s/@[^@]*@//g;
 
       # Variable assignments.
       while (s/\b([a-zA-Z_]\w*)\s*=/ /)
-	{
-	  push (@{$used{'makevars'}{$1}}, "$File::Find::name:$.");
-	}
+        {
+          push (@{$used{'makevars'}{$1}}, "$File::Find::name:$.");
+        }
       # Libraries.
       while (s/\B-l([a-zA-Z_]\w*)\b/ /)
-	{
-	  push (@{$used{'libraries'}{$1}}, "$File::Find::name:$.");
-	}
+        {
+          push (@{$used{'libraries'}{$1}}, "$File::Find::name:$.");
+        }
       # Tokens in the code.
       while (s/(?<![-\w.])([a-zA-Z_][\w+.-]+)/ /)
-	{
-	  push (@{$used{'programs'}{$1}}, "$File::Find::name:$.");
-	}
+        {
+          push (@{$used{'programs'}{$1}}, "$File::Find::name:$.");
+        }
     }
 
   $file->close
@@ -382,14 +383,14 @@ sub scan_sh_file ($)
       # Strip out comments and variable references.
       s/#.*//;
       s/#.*//;
-      s/\${[^\}]*}//g;
+      s/\$\{[^\}]*\}//g;
       s/@[^@]*@//g;
 
       # Tokens in the code.
       while (s/\b([a-zA-Z_]\w*)\b/ /)
-	{
-	  push (@{$used{'programs'}{$1}}, "$File::Find::name:$.");
-	}
+        {
+          push (@{$used{'programs'}{$1}}, "$File::Find::name:$.");
+        }
     }
 
   $file->close
@@ -451,13 +452,13 @@ sub scan_files ()
       print "shfiles:", join(" ", @shfiles), "\n";
 
       foreach my $kind (@kinds)
-	{
-	  print "\n$kind:\n";
-	  foreach my $word (sort keys %{$used{$kind}})
-	    {
-	      print "$word: @{$used{$kind}{$word}}\n";
-	    }
-	}
+        {
+          print "\n$kind:\n";
+          foreach my $word (sort keys %{$used{$kind}})
+            {
+              print "$word: @{$used{$kind}{$word}}\n";
+            }
+        }
     }
 }
 
@@ -482,30 +483,30 @@ sub output_kind ($$)
       # Words that were caught, but not to be checked according to
       # the autoscan library files.
       next
-	if ! exists $macro{$kind}{$word};
+        if ! exists $macro{$kind}{$word};
 
       # Output the needed macro invocations in $configure_scan if not
       # already printed, and remember these macros are needed.
       foreach my $macro (@{$macro{$kind}{$word}})
-	{
-	  if (exists $generic_macro{$kind}
-	      && $macro eq $generic_macro{$kind})
-	    {
-	      push (@have, $word);
-	      push (@{$needed_macros{"$generic_macro{$kind}([$word])"}},
-		    @{$used{$kind}{$word}});
-	    }
-	  else
-	    {
-	      if (! $printed{$macro})
-		{
-		  print $file "$macro\n";
-		  $printed{$macro} = 1;
-		}
-	      push (@{$needed_macros{$macro}},
-		    @{$used{$kind}{$word}});
-	    }
-	}
+        {
+          if (exists $generic_macro{$kind}
+              && $macro eq $generic_macro{$kind})
+            {
+              push (@have, $word);
+              push (@{$needed_macros{"$generic_macro{$kind}([$word])"}},
+                    @{$used{$kind}{$word}});
+            }
+          else
+            {
+              if (! $printed{$macro})
+                {
+                  print $file "$macro\n";
+                  $printed{$macro} = 1;
+                }
+              push (@{$needed_macros{$macro}},
+                    @{$used{$kind}{$word}});
+            }
+        }
     }
   print $file "$generic_macro{$kind}([" . join(' ', sort(@have)) . "])\n"
     if @have;
@@ -599,24 +600,24 @@ sub check_configure_ac ($)
       chomp;
       my ($file, $line, $macro, @args) = split (/:/, $_);
       if ($macro =~ /^AC_CHECK_(HEADER|FUNC|TYPE|MEMBER)S$/)
-	{
-	  # To be rigorous, we should distinguish between space and comma
-	  # separated macros.  But there is no point.
-	  foreach my $word (split (/\s|,/, $args[0]))
-	    {
-	      # AC_CHECK_MEMBERS wants `struct' or `union'.
-	      if ($macro eq "AC_CHECK_MEMBERS"
-		  && $word =~ /^stat.st_/)
-		{
-		  $word = "struct " . $word;
-		}
-	      delete ($needed_macros{"$macro([$word])"});
-	    }
-	}
+        {
+          # To be rigorous, we should distinguish between space and comma
+          # separated macros.  But there is no point.
+          foreach my $word (split (/\s|,/, $args[0]))
+            {
+              # AC_CHECK_MEMBERS wants `struct' or `union'.
+              if ($macro eq "AC_CHECK_MEMBERS"
+                  && $word =~ /^stat.st_/)
+                {
+                  $word = "struct " . $word;
+                }
+              delete ($needed_macros{"$macro([$word])"});
+            }
+        }
       else
-	{
-	  delete ($needed_macros{$macro});
-	}
+        {
+          delete ($needed_macros{$macro});
+        }
     }
 
   $traces->close
@@ -626,8 +627,8 @@ sub check_configure_ac ($)
   foreach my $macro (sort keys %needed_macros)
     {
       warn ("$configure_ac: warning: missing $macro wanted by: "
-	    . (${$needed_macros{$macro}}[0])
-	    . "\n");
+            . (${$needed_macros{$macro}}[0])
+            . "\n");
       print $log "$me: warning: missing $macro wanted by: \n";
       foreach my $need (@{$needed_macros{$macro}})
         {

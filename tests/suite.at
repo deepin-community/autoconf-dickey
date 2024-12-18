@@ -1,4 +1,5 @@
 # Validation suite for Autoconf                           -*- Autoconf -*-
+# Copyright 2010 Thomas E. Dickey
 # Copyright 2000 Free Software Foundation, Inc.
 
 # Still many parts of `autoconf' are not exercised by the test suite.  A few

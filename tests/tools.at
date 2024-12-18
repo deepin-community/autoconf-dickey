@@ -319,7 +319,7 @@ AT_CLEANUP
 ## autoheader.  ##
 ## ------------ ##
 
-# autoheader is intensively used in its modern form throught this
+# autoheader is intensively used in its modern form through this
 # test suite.  But we also have to check that acconfig.h still works.
 # autoheader uses autoconf --trace, so traces first.
 
@@ -424,9 +424,7 @@ AT_DATA([expout],
 AC_CANONICAL_TARGET([])
 dnl The doc says 27 is a valid fubar.
 fubar=27
-AC_CONFIG_FILES([Makefile])
-AC_CONFIG_COMMANDS([default],[[echo $fubar]],[[fubar=$fubar]])
-AC_OUTPUT
+AC_OUTPUT(Makefile, echo $fubar, fubar=$fubar)
 ]])
 
 # Checking `autoupdate'.

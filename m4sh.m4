@@ -3,7 +3,7 @@ include(m4sugar.m4)#                                        -*- Autoconf -*-
 # M4 sugar for common shell constructs.
 # Requires GNU M4 and M4sugar.
 #------------------------------------------------------------------------------
-# Copyright 2020,2021	Thomas E. Dickey
+# Copyright 2020-2021,2022	Thomas E. Dickey
 # Copyright 2000, 2001 Free Software Foundation, Inc.
 #
 # This program is free software; you can redistribute it and/or modify
@@ -321,9 +321,9 @@ $as_executable_p $1[]dnl
 # is provided, you get twice the result.  Prevent this.
 m4_defun([_AS_EXPR_PREPARE],
 [if expr a : '\(a\)' >/dev/null 2>&1; then
-  as_expr=expr
+  as_expr="expr"
 else
-  as_expr=false
+  as_expr="false"
 fi
 ])# _AS_EXPR_PREPARE
 
@@ -347,7 +347,7 @@ if ln -s conf$$.file conf$$ 2>/dev/null; then
     as_ln_s='ln -s'
   fi
 elif ln conf$$.file conf$$ 2>/dev/null; then
-  as_ln_s=ln
+  as_ln_s='ln'
 else
   as_ln_s='cp -p'
 fi
@@ -486,14 +486,14 @@ $debug ||
 }
 
 # Create a (secure) tmp directory for tmp files.
-: ${TMPDIR=/tmp}
+: "${TMPDIR=/tmp}"
 {
   tmp=`(umask 077 && mktemp -d -q "$TMPDIR/$1XXXXXX") 2>/dev/null` &&
   test -n "$tmp" && test -d "$tmp"
 }  ||
 {
   tmp=$TMPDIR/$1$$-$RANDOM
-  (umask 077 && mkdir $tmp)
+  (umask 077 && mkdir "$tmp")
 } ||
 {
    echo "$me: cannot create a temporary directory in $TMPDIR" >&2

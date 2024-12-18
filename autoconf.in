@@ -3,7 +3,7 @@
 # vile:shmode:
 # autoconf -- create `configure' using m4 macros
 #------------------------------------------------------------------------------
-# Copyright 2003-2020,2021	Thomas E. Dickey
+# Copyright 2003-2023,2024	Thomas E. Dickey
 # Copyright 1992, 1993, 1994, 1996, 1999, 2000, 2001
 # Free Software Foundation, Inc.
 
@@ -41,7 +41,7 @@ Operation modes:
   -W, --warnings=CATEGORY  report the warnings falling in CATEGORY [syntax]
 
 Options:
-  -opt-functions           use shell-functions to reduce repetition
+  --opt-functions          use shell-functions to reduce repetition
 
 Warning categories include:
   \`cross'         cross compilation issues
@@ -70,7 +70,7 @@ version="\
 autoconf (@PACKAGE_NAME@) @VERSION@
 Written by David J. MacKenzie.
 
-Copyright 2003-2020,2021	Thomas E. Dickey
+Copyright 2003-2022,2023	Thomas E. Dickey
 Copyright 1992, 1993, 1994, 1996, 1999, 2000, 2001
 Free Software Foundation, Inc.
 This is free software; see the source for copying conditions.  There is NO
@@ -134,8 +134,6 @@ fi
 
 # Variables.
 : ${autoconf_dir=${AC_MACRODIR=@datadir@}}
-test -z "$AC_ACLOCALDIR" &&
-  AC_ACLOCALDIR=`(aclocal --print-ac-dir) 2>/dev/null`
 debug=false
 # Trace Autoconf's initialization?
 initialization=false
@@ -522,7 +520,7 @@ EOF
   #
   #    AT_define([m4sugar.m4], [115], [1], [define], [m4_exit], <m4exit>)
   #
-  # Since `<m4exit>' is not quoted, the outter m4, when processing
+  # Since `<m4exit>' is not quoted, the outer m4, when processing
   # `trace.m4' will exit prematurely.  Hence, move all the builtins to
   # the `at_' name space.
   echo '# Copy the builtins.' >>$tmp/trace.m4

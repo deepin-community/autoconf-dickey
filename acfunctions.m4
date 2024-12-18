@@ -2,7 +2,7 @@
 # vile:fk=utf-8
 # Checking for functions.
 #------------------------------------------------------------------------------
-# Copyright 2020,2021	Thomas E. Dickey
+# Copyright 2020-2022,2023 Thomas E. Dickey
 # Copyright 2000, 2001
 # Free Software Foundation, Inc.
 #
@@ -153,9 +153,9 @@ wenotbecray
 if test $ac_cv_os_cray = yes; then
   for ac_func in _getb67 GETB67 getb67; do
     AC_CHECK_FUNC($ac_func,
-  		  [AC_DEFINE_UNQUOTED(CRAY_STACKSEG_END, $ac_func,
-  				      [Define to one of `_getb67', `GETB67',
-  				       `getb67' for Cray-2 and Cray-YMP
+                  [AC_DEFINE_UNQUOTED(CRAY_STACKSEG_END, $ac_func,
+                                      [Define to one of `_getb67', `GETB67',
+                                       `getb67' for Cray-2 and Cray-YMP
                                        systems. This function is required for
                                        `alloca.c' support on those systems.])
     break])
@@ -300,7 +300,7 @@ AC_CACHE_CHECK([whether closedir returns void],
 [AC_RUN_IFELSE([AC_LANG_PROGRAM([AC_INCLUDES_DEFAULT
 #include <$ac_header_dirent>
 #ifndef __cplusplus
-int closedir ();
+int closedir (DIR *);
 #endif
 ],
                                 [[$ac_main_return (closedir (opendir (".")) != 0);]])],
@@ -345,10 +345,10 @@ AC_DEFUN([AC_FUNC_FNMATCH],
 # Thanks to John Oleynick, Franc,ois Pinard, and Paul Eggert for this test.
 [AC_RUN_IFELSE([AC_LANG_PROGRAM([@%:@include <fnmatch.h>],
  [$ac_main_return (fnmatch ("a*", "abc", 0) != 0
-	|| fnmatch ("d*/*1", "d/s/1", FNM_FILE_NAME) != FNM_NOMATCH
-	|| fnmatch ("*", "x", FNM_FILE_NAME | FNM_LEADING_DIR) != 0
-	|| fnmatch ("x*", "x/y/z", FNM_FILE_NAME | FNM_LEADING_DIR) != 0
-	|| fnmatch ("*c*", "c/x", FNM_FILE_NAME | FNM_LEADING_DIR) != 0);])],
+        || fnmatch ("d*/*1", "d/s/1", FNM_FILE_NAME) != FNM_NOMATCH
+        || fnmatch ("*", "x", FNM_FILE_NAME | FNM_LEADING_DIR) != 0
+        || fnmatch ("x*", "x/y/z", FNM_FILE_NAME | FNM_LEADING_DIR) != 0
+        || fnmatch ("*c*", "c/x", FNM_FILE_NAME | FNM_LEADING_DIR) != 0);])],
                [ac_cv_func_fnmatch_works=yes],
                [ac_cv_func_fnmatch_works=no],
                [ac_cv_func_fnmatch_works=no])])
@@ -372,14 +372,19 @@ AC_DEFUN([AC_FUNC_FSEEKO],
 [_AC_SYS_LARGEFILE_MACRO_VALUE(_LARGEFILE_SOURCE, 1,
    [ac_cv_sys_largefile_source],
    [Define to make fseeko visible on some hosts (e.g. glibc 2.2).],
-   [@%:@include <stdio.h>], [return !fseeko;])
+   [@%:@include <stdio.h>
+    @%:@include <sys/types.h>], [
+    int (*my_fseeko)(FILE *, off_t, int) = fseeko;
+    return my_fseeko(stdin, 0, 0);])
 
 # We used to try defining _XOPEN_SOURCE=500 too, to work around a bug
 # in glibc 2.1.3, but that breaks too many other things.
 # If you want fseeko and ftello with glibc, upgrade to a fixed glibc.
 AC_CACHE_CHECK([for fseeko], [ac_cv_func_fseeko],
-               [AC_TRY_LINK([@%:@include <stdio.h>],
-                            [return fseeko && fseeko (stdin, 0, 0);],
+               [AC_TRY_LINK([@%:@include <stdio.h>
+                             @%:@include <sys/types.h>],
+                            [int (*my_fseeko)(FILE *, off_t, int) = fseeko;
+                            return my_fseeko && my_fseeko (stdin, 0, 0);],
                             [ac_cv_func_fseeko=yes],
                             [ac_cv_func_fseeko=no])])
 if test $ac_cv_func_fseeko = yes; then
@@ -552,8 +557,8 @@ if test $ac_cv_func_getloadavg_setgid = yes; then
   test -z "$ac_ls_output" && ac_ls_output=`ls -lg /dev/kmem`
   ac_cv_group_kmem=`echo $ac_ls_output \
     | sed -ne ['s/[ 	][ 	]*/ /g;
-	       s/^.[sSrwx-]* *[0-9]* *\([^0-9]*\)  *.*/\1/;
-	       / /s/.* //;p;']`
+               s/^.[sSrwx-]* *[0-9]* *\([^0-9]*\)  *.*/\1/;
+               / /s/.* //;p;']`
 ])
   AC_SUBST(KMEM_GROUP, $ac_cv_group_kmem)dnl
 fi
@@ -624,14 +629,14 @@ main (void)
     {
       np = getpid ();
       /*  If this is Sys V, this will not work; pgrp will be set to np
-	 because setpgrp just changes a pgrp to be the same as the
-	 pid.  */
+         because setpgrp just changes a pgrp to be the same as the
+         pid.  */
       setpgrp (np, pg1);
       ng = getpgrp (0);        /* Same result for Sys V and BSD */
       if (ng == pg1)
-  	$ac_main_return (1);
+        $ac_main_return (1);
       else
-  	$ac_main_return (0);
+        $ac_main_return (0);
     }
   else
     {
@@ -677,7 +682,7 @@ fi
 # AC_FUNC_LSTAT_FOLLOWS_SLASHED_SYMLINK
 # -------------------------------------
 # When crosscompiling, be pessimistic so we will end up using the
-# replacement version of lstat that checkes for trailing slashes and
+# replacement version of lstat that checks for trailing slashes and
 # calls lstat a second time when necessary.
 AC_DEFUN([AC_FUNC_LSTAT_FOLLOWS_SLASHED_SYMLINK],
 [AC_CACHE_CHECK(
@@ -818,7 +823,7 @@ static const char *const tz_strings[] = {
 
 /* Fail if mktime fails to convert a date in the spring-forward gap.
    Based on a problem report from Andreas Jaeger.  */
-static void
+static int
 spring_forward_gap (void)
 {
   /* glibc (up to about 1998-10-07) failed this test. */
@@ -838,22 +843,23 @@ spring_forward_gap (void)
   tm.tm_sec = 0;
   tm.tm_isdst = -1;
   if (mktime (&tm) == (time_t)-1)
-    $ac_main_return (1);
+    return 1;
+  return 0;
 }
 
-static void
-mktime_test (now)
-     time_t now;
+static int
+mktime_test (time_t now)
 {
   struct tm *lt;
   if ((lt = localtime (&now)) && mktime (lt) != now)
-    $ac_main_return (1);
+    return 1;
   now = time_t_max - now;
   if ((lt = localtime (&now)) && mktime (lt) != now)
-    $ac_main_return (1);
+    return 1;
+  return 0;
 }
 
-static void
+static int
 irix_6_4_bug (void)
 {
   /* Based on code from Ariel Faigon.  */
@@ -867,12 +873,12 @@ irix_6_4_bug (void)
   tm.tm_isdst = -1;
   mktime (&tm);
   if (tm.tm_mon != 2 || tm.tm_mday != 31)
-    $ac_main_return (1);
+    return 1;
+  return 0;
 }
 
-static void
-bigtime_test (j)
-     int j;
+static int
+bigtime_test (int j)
 {
   struct tm tm;
   time_t now;
@@ -882,18 +888,19 @@ bigtime_test (j)
     {
       struct tm *lt = localtime (&now);
       if (! (lt
-	     && lt->tm_year == tm.tm_year
-	     && lt->tm_mon == tm.tm_mon
-	     && lt->tm_mday == tm.tm_mday
-	     && lt->tm_hour == tm.tm_hour
-	     && lt->tm_min == tm.tm_min
-	     && lt->tm_sec == tm.tm_sec
-	     && lt->tm_yday == tm.tm_yday
-	     && lt->tm_wday == tm.tm_wday
-	     && ((lt->tm_isdst < 0 ? -1 : 0 < lt->tm_isdst)
-		  == (tm.tm_isdst < 0 ? -1 : 0 < tm.tm_isdst))))
-	$ac_main_return (1);
+         && lt->tm_year == tm.tm_year
+         && lt->tm_mon == tm.tm_mon
+         && lt->tm_mday == tm.tm_mday
+         && lt->tm_hour == tm.tm_hour
+         && lt->tm_min == tm.tm_min
+         && lt->tm_sec == tm.tm_sec
+         && lt->tm_yday == tm.tm_yday
+         && lt->tm_wday == tm.tm_wday
+         && ((lt->tm_isdst < 0 ? -1 : 0 < lt->tm_isdst)
+          == (tm.tm_isdst < 0 ? -1 : 0 < tm.tm_isdst))))
+       return 1;
     }
+  return 0;
 }
 
 int
@@ -907,26 +914,37 @@ main (void)
      isn't worth using anyway.  */
   alarm (60);
 
-  for (time_t_max = 1; 0 < time_t_max; time_t_max *= 2)
+  for (time_t_max = 1; 0 < time_t_max; time_t_max <<= 1)
     continue;
   time_t_max--;
   delta = time_t_max / 997; /* a suitable prime number */
   for (i = 0; i < N_STRINGS; i++)
     {
       if (tz_strings[i])
-	putenv (tz_strings[i]);
+        putenv (tz_strings[i]);
 
       for (t = 0; t <= time_t_max - delta; t += delta)
-	mktime_test (t);
-      mktime_test ((time_t) 60 * 60);
-      mktime_test ((time_t) 60 * 60 * 24);
+        {
+          if (mktime_test (t))
+            $ac_main_return (1);
+        }
+      if (mktime_test ((time_t) 60 * 60)
+       || mktime_test ((time_t) 60 * 60 * 24))
+        {
+          $ac_main_return (1);
+        }
 
-      for (j = 1; 0 < j; j *= 2)
-        bigtime_test (j);
-      bigtime_test (j - 1);
+      for (j = 1; 0 < j; j <<= 1)
+        {
+          if (bigtime_test (j))
+            $ac_main_return (1);
+        }
+      if (bigtime_test (j - 1))
+        $ac_main_return (1);
     }
-  irix_6_4_bug ();
-  spring_forward_gap ();
+  if (irix_6_4_bug ()
+    || spring_forward_gap ())
+    $ac_main_return (1);
   $ac_main_return (0);
 }]])],
                [ac_cv_func_working_mktime=yes],
@@ -952,12 +970,12 @@ AC_CACHE_CHECK(for working mmap, ac_cv_func_mmap_fixed_mapped,
 [AC_RUN_IFELSE([AC_LANG_SOURCE([AC_INCLUDES_DEFAULT]
 [[/* Thanks to Mike Haertel and Jim Avera for this test.
    Here is a matrix of mmap possibilities:
-	mmap private not fixed
-	mmap private fixed at somewhere currently unmapped
-	mmap private fixed at somewhere already mapped
-	mmap shared not fixed
-	mmap shared fixed at somewhere currently unmapped
-	mmap shared fixed at somewhere already mapped
+        mmap private not fixed
+        mmap private fixed at somewhere currently unmapped
+        mmap private fixed at somewhere already mapped
+        mmap shared not fixed
+        mmap shared fixed at somewhere currently unmapped
+        mmap shared fixed at somewhere already mapped
    For private mappings, we should verify that changes cannot be read()
    back from the file, nor mmap's back from the file at a different
    address.  (There have been systems where private was not correctly
@@ -965,7 +983,7 @@ AC_CACHE_CHECK(for working mmap, ac_cv_func_mmap_fixed_mapped,
    VM page cache was not coherent with the file system buffer cache
    like early versions of FreeBSD and possibly contemporary NetBSD.)
    For shared mappings, we should conversely verify that changes get
-   propogated back to all the places they're supposed to be.
+   propagated back to all the places they're supposed to be.
 
    Grep wants private fixed already mapped.
    The main things grep needs to know about mmap are:
@@ -1010,7 +1028,7 @@ char *malloc ();
 #    endif /* no NBPG */
 #   endif /* no EXEC_PAGESIZE */
 #  else /* no HAVE_SYS_PARAM_H */
-#   define getpagesize() 8192	/* punt totally */
+#   define getpagesize() 8192   /* punt totally */
 #  endif /* no HAVE_SYS_PARAM_H */
 # endif /* no _SC_PAGESIZE */
 
@@ -1232,13 +1250,17 @@ fi
 AC_DEFUN([AC_FUNC_STRTOD],
 [AC_CACHE_CHECK(for working strtod, ac_cv_func_strtod,
 [AC_RUN_IFELSE([AC_LANG_SOURCE([[
+#if STDC_HEADERS || HAVE_STDLIB_H
+#include <stdlib.h>
+#else
 double strtod ();
+#endif
 int
 main(void)
 {
   {
     /* Some versions of Linux strtod mis-parse strings with leading '+'.  */
-    char *string = " +69";
+    static char string[] = " +69";
     char *term;
     double value;
     value = strtod (string, &term);
@@ -1249,7 +1271,7 @@ main(void)
   {
     /* Under Solaris 2.4, strtod returns the wrong value for the
        terminating character under some conditions.  */
-    char *string = "NaN";
+    static char string[] = "NaN";
     char *term;
     strtod (string, &term);
     if (term != string && *(term - 1) == 0)
@@ -1296,10 +1318,10 @@ if test $ac_cv_func_strerror_r = yes; then
       # has a strerror_r that returns `int'.
       # This test should segfault on the DEC system.
       AC_RUN_IFELSE([AC_LANG_PROGRAM([AC_INCLUDES_DEFAULT
-	extern char *strerror_r ();],
-	[[char buf[100];
-	  char x = *strerror_r (0, buf, sizeof buf);
-	  $ac_main_return (!isalpha (x));]])],
+        extern char *strerror_r ();],
+        [[char buf[100];
+          char x = *strerror_r (0, buf, sizeof buf);
+          $ac_main_return (!isalpha (x));]])],
                     ac_cv_func_strerror_r_works=yes,
                     ac_cv_func_strerror_r_works=no,
                     ac_cv_func_strerror_r_works=no)
@@ -1340,7 +1362,7 @@ main (void)
   if (setvbuf(stdout, _IOLBF, (char *) main, BUFSIZ) != 0)
     $ac_main_return(1);
   putc('\r', stdout);
-  $ac_main_return(0);			/* Non-reversed systems segv here.  */
+  $ac_main_return(0);                   /* Non-reversed systems segv here.  */
 }], ac_cv_func_setvbuf_reversed=yes, ac_cv_func_setvbuf_reversed=no)
 rm -f core ./core.* ./*.core])
 if test $ac_cv_func_setvbuf_reversed = yes; then
@@ -1363,8 +1385,8 @@ AC_DEFUN([AC_FUNC_STRCOLL],
 [AC_CACHE_CHECK(for working strcoll, ac_cv_func_strcoll_works,
 [AC_RUN_IFELSE([AC_LANG_PROGRAM([AC_INCLUDES_DEFAULT],
   [[$ac_main_return (strcoll ("abc", "def") >= 0 ||
-	 strcoll ("ABC", "DEF") >= 0 ||
-	 strcoll ("123", "456") >= 0)]])],
+         strcoll ("ABC", "DEF") >= 0 ||
+         strcoll ("123", "456") >= 0)]])],
                ac_cv_func_strcoll_works=yes,
                ac_cv_func_strcoll_works=no,
                ac_cv_func_strcoll_works=no)])
@@ -1497,11 +1519,7 @@ AC_DEFUN([_AC_FUNC_VFORK],
    static variable whose address is put into a register that is
    clobbered by the vfork.  */
 static
-#ifdef __cplusplus
 sparc_address_test (int arg)
-# else
-sparc_address_test (arg) int arg;
-#endif
 {
   static pid_t child;
   if (!child) {
@@ -1544,7 +1562,7 @@ main (void)
     /* Convince the compiler that p..p7 are live; otherwise, it might
        use the same hardware register for all 8 local variables.  */
     if (p != p1 || p != p2 || p != p3 || p != p4
-	|| p != p5 || p != p6 || p != p7)
+        || p != p5 || p != p6 || p != p7)
       _exit(1);
 
     /* On some systems (e.g. IRIX 3.3), vfork doesn't separate parent
@@ -1559,18 +1577,18 @@ main (void)
     while (wait(&status) != child)
       ;
     $ac_main_return(
-	 /* Was there some problem with vforking?  */
-	 child < 0
+         /* Was there some problem with vforking?  */
+         child < 0
 
-	 /* Did the child fail?  (This shouldn't happen.)  */
-	 || status
+         /* Did the child fail?  (This shouldn't happen.)  */
+         || status
 
-	 /* Did the vfork/compiler bug occur?  */
-	 || parent != getpid()
+         /* Did the vfork/compiler bug occur?  */
+         || parent != getpid()
 
-	 /* Did the file descriptor bug occur?  */
-	 || fstat(fileno(stdout), &st) != 0
-	 );
+         /* Did the file descriptor bug occur?  */
+         || fstat(fileno(stdout), &st) != 0
+         );
   }
 }],
             [ac_cv_func_vfork_works=yes],
@@ -1650,7 +1668,7 @@ main (void)
       /* Avoid "text file busy" from rm on fast HP-UX machines.  */
       sleep(2);
       $ac_main_return (r.ru_nvcsw == 0 && r.ru_majflt == 0 && r.ru_minflt == 0
-	    && r.ru_stime.tv_sec == 0 && r.ru_stime.tv_usec == 0);
+            && r.ru_stime.tv_sec == 0 && r.ru_stime.tv_usec == 0);
     }
 }]])],
                [ac_cv_func_wait3_rusage=yes],

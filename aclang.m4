@@ -1,7 +1,7 @@
 # This file is part of Autoconf.                       -*- Autoconf -*-
 # Programming languages support.
 #------------------------------------------------------------------------------
-# Copyright 2020,2021	Thomas E. Dickey
+# Copyright 2020-2021,2023	Thomas E. Dickey
 # Copyright 2000, 2001
 # Free Software Foundation, Inc.
 #
@@ -386,7 +386,7 @@ extern "C"
 #endif
 /* We use char because int might match the return type of a gcc2
    builtin and then its argument prototype would still apply.  */
-char $2 ();])], [$2 ();])])
+char $2 (void);])], [$2 ();])])
 
 
 # AC_LANG_FUNC_LINK_TRY(C)(FUNCTION)
@@ -595,7 +595,7 @@ AC_DEFUN([AC_REQUIRE_CPP],
 # -----------------
 # FIXME: The GCC team has specific needs which the current Autoconf
 # framework cannot solve elegantly.  This macro implements a dirty
-# hack until Autoconf is abble to provide the services its users
+# hack until Autoconf is able to provide the services its users
 # needs.
 #
 # Several of the support libraries that are often built with GCC can't
@@ -1281,7 +1281,7 @@ AU_DEFUN([ac_cv_prog_g77],
 # ---------------------------
 # COMPILERS is a space separated list of Fortran 77 compilers to search
 # for.
-# Fortran 95 isn't strictly backwards-compatiable with Fortran 77, but
+# Fortran 95 isn't strictly backwards-compatible with Fortran 77, but
 # `f95' is worth trying.
 #
 # Compilers are ordered by
@@ -1437,9 +1437,7 @@ AC_LANG_CONFTEST([AC_LANG_PROGRAM(
 /* Most of the following tests are stolen from RCS 5.7's src/conf.sh.  */
 struct buf { int x; };
 FILE * (*rcsopen) (struct buf *, struct stat *, int);
-static char *e (p, i)
-     char **p;
-     int i;
+static char *e (char **p, int i)
 {
   return p[i];
 }
@@ -1592,8 +1590,8 @@ AC_CACHE_CHECK([for inline], ac_cv_c_inline,
 for ac_kw in inline __inline__ __inline; do
   AC_COMPILE_IFELSE([AC_LANG_SOURCE(
 [#ifndef __cplusplus
-static $ac_kw int static_foo () {return 0; }
-$ac_kw int foo () {return 0; }
+static $ac_kw int static_foo (void) {return 0; }
+$ac_kw int foo (void) {return 0; }
 #endif
 ])],
                     [ac_cv_c_inline=$ac_kw; break])
@@ -1619,13 +1617,13 @@ AC_CACHE_CHECK([for an ANSI C-conforming const], ac_cv_c_const,
 #ifndef __cplusplus
   /* Ultrix mips cc rejects this.  */
   typedef int charset[2];
-  const charset x;
+  const charset x; (void)x;
   /* SunOS 4.1.1 cc rejects this.  */
   char const *const *ccp;
   char **p;
   /* NEC SVR4.0.2 mips cc rejects this.  */
   struct point {int x, y;};
-  static struct point const zero = {0,0};
+  static struct point const zero = {0,0}; (void)zero;
   /* AIX XL C 1.02.0.0 rejects this.
      It does not let you subtract one const X* pointer from another in
      an arm of an if-expression whose if-part is not a constant
@@ -1641,16 +1639,19 @@ AC_CACHE_CHECK([for an ANSI C-conforming const], ac_cv_c_const,
     char const *s = 0 ? (char *) 0 : (char const *) 0;
 
     *t++ = 0;
+	(void)s;
   }
   { /* Someone thinks the Sun supposedly-ANSI compiler will reject this.  */
     int x[] = {25, 17};
     const int *foo = &x[0];
     ++foo;
+	(void)foo;
   }
   { /* Sun SC1.0 ANSI compiler rejects this -- but not the above. */
     typedef const int *iptr;
     iptr p = 0;
     ++p;
+	(void)p;
   }
   { /* AIX XL C 1.02.0.0 rejects this saying
        "k.c", line 2.27: 1506-025 (S) Operand must be a modifiable lvalue. */
@@ -1659,6 +1660,7 @@ AC_CACHE_CHECK([for an ANSI C-conforming const], ac_cv_c_const,
   }
   { /* ULTRIX-32 V3.1 (Rev 9) vcc rejects this */
     const int foo = 10;
+	(void)foo;
   }
 #endif
 ]])],
@@ -1736,7 +1738,7 @@ fi
 
 
 # ---------------------------------------- #
-# 4d. Fortan 77 compiler characteristics.  #
+# 4d. Fortran 77 compiler characteristics. #
 # ---------------------------------------- #
 
 
@@ -2042,7 +2044,7 @@ AC_DEFINE_UNQUOTED([F77_MAIN], $ac_cv_f77_main,
 # by commas:
 #
 # lower case / upper case:
-#    case translation of the Fortan 77 symbols
+#    case translation of the Fortran 77 symbols
 # underscore / no underscore:
 #    whether the compiler appends "_" to symbol names
 # extra underscore / no extra underscore:

@@ -1,5 +1,4 @@
-# Makefile.in generated automatically by automake 1.4-p4 from Makefile.am
-
+# Copyright 2010-2021,2023 Thomas E. Dickey
 # Copyright (C) 1994, 1995-8, 1999 Free Software Foundation, Inc.
 # This Makefile.in is free software; the Free Software Foundation
 # gives unlimited permission to copy and/or distribute it,
@@ -19,77 +18,90 @@ VPATH = @srcdir@
 prefix = @prefix@
 exec_prefix = @exec_prefix@
 
-bindir = @bindir@
-sbindir = @sbindir@
-libexecdir = @libexecdir@
 datarootdir = @datarootdir@
 datadir = @datadir@
-sysconfdir = @sysconfdir@
-sharedstatedir = @sharedstatedir@
-localstatedir = @localstatedir@
-libdir = @libdir@
-infodir = @infodir@
-mandir = @mandir@
-includedir = @includedir@
-oldincludedir = /usr/include
 
 DESTDIR =
 
-pkgdatadir = $(datadir)/@PACKAGE@
-pkglibdir = $(libdir)/@PACKAGE@
-pkgincludedir = $(includedir)/@PACKAGE@
-
 top_builddir = ..
 
-ACLOCAL = @ACLOCAL@
-AUTOCONF = @AUTOCONF@
-#AUTOMAKE = @AUTOMAKE@
-AUTOHEADER = @AUTOHEADER@
-
-INSTALL = @INSTALL@
-INSTALL_PROGRAM = @INSTALL_PROGRAM@ $(AM_INSTALL_PROGRAM_FLAGS)
-INSTALL_DATA = @INSTALL_DATA@
-INSTALL_SCRIPT = @INSTALL_SCRIPT@
 transform = @program_transform_name@
 
-NORMAL_INSTALL = :
-PRE_INSTALL = :
-POST_INSTALL = :
-NORMAL_UNINSTALL = :
-PRE_UNINSTALL = :
-POST_UNINSTALL = :
-AWK = @AWK@
 EXPR = @EXPR@
-HELP2MAN = @HELP2MAN@
 M4 = @M4@
 PACKAGE = @PACKAGE@
-PACKAGE_NAME = @PACKAGE_NAME@
-PERL = @PERL@
-PERLSCRIPTS = @PERLSCRIPTS@
 VERSION = @VERSION@
 
-AUTOMAKE_OPTIONS = gnits
+SUITE = suite.at \
+	m4sugar.at \
+	m4sh.at \
+	base.at \
+	tools.at \
+	torture.at \
+	compile.at \
+	semantics.at \
+	acgeneral.at \
+	acspecific.at \
+	acfunctions.at \
+	aclang.at \
+	acheaders.at \
+	actypes.at
 
-SUITE = suite.at         m4sugar.at m4sh.at         base.at tools.at torture.at compile.at semantics.at 	acgeneral.at acspecific.at acfunctions.at aclang.at acheaders.at 	actypes.at
-
+EGREP = @EGREP@
+FGREP = @FGREP@
 
 # We don't actually distribute the testsuite, since one only
 # needs m4 to build it, m4 being required anyway to install Autoconf.
-EXTRA_DIST = README              atgeneral.m4 atspecific.m4 aclocal.m4              $(SUITE) mktests.sh
-
+EXTRA_DIST = README atgeneral.m4 atspecific.m4 aclocal.m4 $(SUITE) mktests.sh
 
 # The files which contains macro we check for syntax.  Don't use $(top_srcdir)
 # here since below we explicitly `cd' to $srcdir.  As for the dependencies,
 # thanks God for VPATH.  Hm...
-MACRO_FILES = ../acgeneral.m4               ../acspecific.m4               ../acfunctions.m4               ../aclang.m4               ../acheaders.m4               ../actypes.m4
+MACRO_FILES = \
+	../acgeneral.m4 \
+	../acspecific.m4 \
+	../acfunctions.m4 \
+	../aclang.m4 \
+	../acheaders.m4 \
+	../actypes.m4
 
-
-CLEANFILES = debug-*.sh macro configure configure.in configure.ac              config.status config.cache config.log config.h.in config.h              config.hin state-* at-*              stderr stdout empty 	     config.guess config.sub expr libtool ltconfig ltmain.sh install-sh
+CLEANFILES = \
+	debug-*.sh \
+	macro \
+	configure \
+	configure.in \
+	configure.ac \
+	config.status \
+	config.cache \
+	config.log \
+	config.h.in \
+	config.h \
+	config.hin \
+	state-* \
+	at-* \
+	stderr \
+	stdout \
+	empty \
+	config.guess \
+	config.sub \
+	expr \
+	libtool \
+	ltconfig \
+	ltmain.sh \
+	install-sh
 
 DISTCLEANFILES = atconfig testsuite
-CONFIG_CLEAN_FILES =  atconfig mktests.sh
-DIST_COMMON =  README Makefile.am Makefile.in atconfig.in
+CONFIG_CLEAN_FILES = \
+	atconfig \
+	mktests.sh \
+	acgeneral.at \
+	acspecific.at \
+	acfunctions.at \
+	aclang.at \
+	acheaders.at \
+	actypes.at
 
+DIST_COMMON =  README Makefile.am Makefile.in atconfig.in
 
 DISTFILES = $(DIST_COMMON) $(SOURCES) $(HEADERS) $(TEXINFOS) $(EXTRA_DIST)
 
@@ -188,7 +200,8 @@ mostlyclean distclean maintainer-clean
 
 
 check-local: atconfig testsuite
-	$(SHELL) testsuite
+	@echo "making $@"
+	@FGREP="$(FGREP)" EGREP="$(EGREP)" $(SHELL) testsuite
 
 testsuite: $(top_srcdir)/m4sugar.m4 $(top_srcdir)/m4sh.m4 \
            atgeneral.m4 atspecific.m4 \

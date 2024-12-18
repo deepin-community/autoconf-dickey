@@ -1,12 +1,12 @@
 #                                                       -*- Autoconf -*-
-# Copyright 2008-2020,2021	Thomas E. Dickey
+# Copyright 2008-2023,2024	Thomas E. Dickey
 #------------------------------------------------------------------------------
 # Process this file with autoconf to produce a configure script.
 AC_PREREQ(2.50)
-AC_INIT(GNU Autoconf, [2.52.20210509], dickey@invisible-island.net)
+AC_INIT(GNU Autoconf, [2.52.20240618], dickey@invisible-island.net)
 AC_CONFIG_SRCDIR(acgeneral.m4)
 AC_CONFIG_AUX_DIR(config)
-AM_INIT_AUTOMAKE(autoconf, [2.52.20210509])
+AM_INIT_AUTOMAKE(autoconf, [2.52.20240618])
 
 # Initialize the test suite.
 AT_CONFIG(..)
@@ -49,11 +49,12 @@ else
 fi
 
 AC_PROG_INSTALL
+AC_PROG_FGREP
 
 AC_PATH_PROGS(INSTALL_INFO, ginstall-info install-info, no, $PATH:/sbin:/usr/sbin)
 if test "$INSTALL_INFO" != no; then
   if $INSTALL_INFO --version && \
-	 ( $INSTALL_INFO --version | fgrep -i -v debian ) >/dev/null 2>&1; then
+	 ( $INSTALL_INFO --version | $FGREP -i -v debian ) >/dev/null 2>&1; then
      :
   else
     AC_MSG_WARN(install-info utility not found)

@@ -1,6 +1,7 @@
 #! @PERL@ -w
 # -*- perl -*-
 # autoupdate - modernize an Autoconf file.
+# Copyright 2010-2022,2023 Thomas E. Dickey
 # Copyright 1994, 1999, 2000, 2001 Free Software Foundation, Inc.
 
 # This program is free software; you can redistribute it and/or modify
@@ -205,7 +206,7 @@ sub find_slaves ()
 {
   # Some non-GNU m4's don't reject the --help option, so give them /dev/null.
   die "Autoconf requires GNU m4 1.4 or later\n"
-    if system "$m4 --help </dev/null 2>&1 | fgrep reload-state >/dev/null";
+    if system "$m4 --help </dev/null 2>&1 | @FGREP@ reload-state >/dev/null";
 
   # autoconf.
   (my $dir = $0) =~ s,[^\\/]*$,,;
@@ -377,7 +378,7 @@ foreach my $file (@ARGV)
       # They work by pair: each time an AU macro is activated, it runs
       # _au_enable, and at its end its runs _au_disable (see _au_defun
       # above).  But since AU macros might use AU macros, which should
-      # enable/disable only for the outter AU macros.
+      # enable/disable only for the outer AU macros.
       #
       # \`_au_enabled' is used to this end, condionning whether we really
       # enable/disable.
@@ -1120,11 +1121,11 @@ exit 0;
 #
 # Well... almost.
 #
-# There is a slight problem that remains: if an AU macro OUTTER includes
-# an AU macro INNER, then _au_enable will be run when entering OUTTER
+# There is a slight problem that remains: if an AU macro OUTER includes
+# an AU macro INNER, then _au_enable will be run when entering OUTER
 # and when entering INNER (not good, but not too bad yet).  But when
 # getting out of INNER, _au_disable will disable everything while we
-# were still in OUTTER.  Badaboom.
+# were still in OUTER.  Badaboom.
 #
 # Therefore _au_enable and _au_disable have to be written to work by
 # pairs: each _au_enable pushdef's _au_enabled, and each _au_disable

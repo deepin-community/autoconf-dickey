@@ -25,7 +25,7 @@ include(atgeneral.m4)					-*- Autoconf -*-
 # AT_CONFIGURE_AC(BODY)
 # ---------------------
 # Create a full configure.ac running BODY, with a config header set up,
-# AC_OUTPUT, and environement checking hooks.
+# AC_OUTPUT, and environment checking hooks.
 m4_define([AT_CONFIGURE_AC],
 [AT_CLEANUP_FILES(env-after state*)dnl
 AT_DATA([configure.ac],
@@ -76,15 +76,16 @@ AT_CHECK([top_srcdir=$top_srcdir ./configure $1],
 # ------------
 # Check that the full configure run remained in its variable name space,
 # and cleaned up tmp files.
-# me tests might exit prematurely when they find a problem, in
+# The tests might exit prematurely when they find a problem, in
 # which case `env-after' is probably missing.  Don't check it then.
 m4_define([AT_CHECK_ENV],
-[if test -f state-env.before -a -f state-env.after; then
-  mv -f state-env.before expout
+[if test -f expout; then chmod +w expout; fi
+if test -f state-env.before -a -f state-env.after; then
+  mv state-env.before expout
   AT_CHECK([cat state-env.after], 0, expout)
 fi
 if test -f state-ls.before -a -f state-ls.after; then
-  mv -f state-ls.before expout
+  mv state-ls.before expout
   AT_CHECK([cat state-ls.after], 0, expout)
 fi
 ])
@@ -97,8 +98,8 @@ fi
 # but those of automatically checked features (STDC_HEADERS etc.).
 # AT_CHECK_HEADER is a better name, but too close from AC_CHECK_HEADER.
 m4_define([AT_CHECK_DEFINES],
-[AT_CHECK([[fgrep '#' config.h |
- egrep -v 'STDC_HEADERS|STD(INT|LIB)|INTTYPES|MEMORY|STRING|UNISTD|SYS_(TYPES|STAT)']],,
+[AT_CHECK([[$FGREP '#' config.h |
+ $EGREP -v 'STDC_HEADERS|STD(INT|LIB)|INTTYPES|MEMORY|STRING|UNISTD|SYS_(TYPES|STAT)']],,
           [$1])])
 
 
@@ -160,7 +161,7 @@ AT_CLEANUP()dnl
 #
 # Updated configure.ac shall not depend upon obsolete macros, which votes
 # in favor of `-W obsolete', but since many of these macros leave a message
-# to be removed by the user once her code ajusted, let's not check.
+# to be removed by the user once her code is adjusted, let's not check.
 #
 # Remove config.hin to avoid `autoheader: config.hin is unchanged'.
 m4_define([AT_CHECK_AU_MACRO],

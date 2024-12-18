@@ -148,7 +148,7 @@ AC_CHECK_SIZEOF(charchar,,
 typedef char charchar[2];]])
 AC_CHECK_SIZEOF(charcharchar)
 
-# Exercize the code used when cross-compiling
+# Exercise the code used when cross-compiling
 cross_compiling=yes
 AC_CHECK_SIZEOF(unsigned char)
 AC_CHECK_SIZEOF(ucharchar,,
