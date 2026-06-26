@@ -1,4 +1,9 @@
 -- vile:fk=utf-8
+2025-01-26  Thomas E. Dickey <dickey@invisible-island.net>
+	Version 2.52.20250126.
+
+	fix a regression with c89
+
 2024-06-18  Thomas E. Dickey <dickey@invisible-island.net>
 	Version 2.52.20240618.
 

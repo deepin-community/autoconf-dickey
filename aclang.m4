@@ -1,7 +1,7 @@
 # This file is part of Autoconf.                       -*- Autoconf -*-
 # Programming languages support.
 #------------------------------------------------------------------------------
-# Copyright 2020-2021,2023	Thomas E. Dickey
+# Copyright 2020-2023,2025	Thomas E. Dickey
 # Copyright 2000, 2001
 # Free Software Foundation, Inc.
 #
@@ -1617,13 +1617,13 @@ AC_CACHE_CHECK([for an ANSI C-conforming const], ac_cv_c_const,
 #ifndef __cplusplus
   /* Ultrix mips cc rejects this.  */
   typedef int charset[2];
-  const charset x; (void)x;
+  const charset x;
   /* SunOS 4.1.1 cc rejects this.  */
   char const *const *ccp;
   char **p;
   /* NEC SVR4.0.2 mips cc rejects this.  */
   struct point {int x, y;};
-  static struct point const zero = {0,0}; (void)zero;
+  static struct point const zero = {0,0};
   /* AIX XL C 1.02.0.0 rejects this.
      It does not let you subtract one const X* pointer from another in
      an arm of an if-expression whose if-part is not a constant
@@ -1639,7 +1639,7 @@ AC_CACHE_CHECK([for an ANSI C-conforming const], ac_cv_c_const,
     char const *s = 0 ? (char *) 0 : (char const *) 0;
 
     *t++ = 0;
-	(void)s;
+	(void)s; (void)x; (void)zero;
   }
   { /* Someone thinks the Sun supposedly-ANSI compiler will reject this.  */
     int x[] = {25, 17};

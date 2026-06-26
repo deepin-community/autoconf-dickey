@@ -1,12 +1,12 @@
 #                                                       -*- Autoconf -*-
-# Copyright 2008-2023,2024	Thomas E. Dickey
+# Copyright 2008-2024,2025	Thomas E. Dickey
 #------------------------------------------------------------------------------
 # Process this file with autoconf to produce a configure script.
 AC_PREREQ(2.50)
-AC_INIT(GNU Autoconf, [2.52.20240618], dickey@invisible-island.net)
+AC_INIT(GNU Autoconf, [2.52.20250126], dickey@invisible-island.net)
 AC_CONFIG_SRCDIR(acgeneral.m4)
 AC_CONFIG_AUX_DIR(config)
-AM_INIT_AUTOMAKE(autoconf, [2.52.20240618])
+AM_INIT_AUTOMAKE(autoconf, [2.52.20250126])
 
 # Initialize the test suite.
 AT_CONFIG(..)
